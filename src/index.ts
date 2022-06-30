@@ -2,17 +2,14 @@
 const cwd = import.meta.url.replace("file://", "").replace(/\/index.(j|t)s/g, "");
 process.chdir(cwd);
 
-import Discord, { Options } from "discord.js";
+import Discord from "discord.js";
 import "dotenv/config";
 import fetch from "node-fetch";
 import { fetchTrackInfo, getSpotifyToken } from "./util.js";
 
 const client = new Discord.Client({
     intents: ["GUILDS", "GUILD_MESSAGES"],
-    partials: ["MESSAGE"],
-    makeCache: Options.cacheWithLimits({
-        MessageManager: 0
-    })
+    partials: ["MESSAGE"]
 });
 
 if (!process.env.BOT_TOKEN) {
@@ -35,6 +32,7 @@ client.login(process.env.BOT_TOKEN);
 client.on("ready", c => console.log(c.user?.tag + " is ready!"));
 
 let spotifyToken = "";
+const handledMessages = [] as string[];
 
 client.on("messageCreate", handleMessage);
 client.on("messageUpdate", async (_, msg) => {
@@ -48,7 +46,7 @@ async function handleMessage(msg: Discord.Message) {
     const perms = msg.channel.permissionsFor(msg.guild.me);
     if (!perms.has("SEND_MESSAGES") || !perms.has("ATTACH_FILES")) return;
 
-    if (!msg.content.match(/open.spotify.com\/track\//gi)) return;
+    if (!msg.content.match(/open.spotify.com\/track\//gi) || handledMessages.includes(msg.id)) return;
     
     const files = [] as Discord.MessageAttachment[];
 
@@ -91,6 +89,8 @@ async function handleMessage(msg: Discord.Message) {
         files,
         reply: { messageReference: msg }
     });
+
+    handledMessages.push(msg.id);
 }
 
 async function fetchTrackInfoSimple(track: string, secondAttempt = false): Promise<{ preview_url?: string, title: string }> {
