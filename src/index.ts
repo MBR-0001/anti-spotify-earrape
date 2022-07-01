@@ -80,7 +80,7 @@ async function handleMessage(msg: Discord.Message) {
         }
 
         const buff = Buffer.from(await res.arrayBuffer());
-        files.push(new Discord.MessageAttachment(buff, `Preview_${info.title}.${ext}`));
+        files.push(new Discord.MessageAttachment(buff, `Preview_${info.title.substr(0, 30)}.${ext}`));
     }
 
     if (files.length == 0) return;
