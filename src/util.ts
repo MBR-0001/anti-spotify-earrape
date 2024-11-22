@@ -1,4 +1,3 @@
-import fetch, { Response } from "node-fetch";
 import { inspect } from "util";
 
 async function fetchTrackInfo(token: string, trackId: string): Promise<{ preview_url?: string, title: string } | 401> {

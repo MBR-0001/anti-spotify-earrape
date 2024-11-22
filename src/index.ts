@@ -4,7 +4,6 @@ process.chdir(cwd);
 
 import Discord from "discord.js";
 import "dotenv/config";
-import fetch from "node-fetch";
 import { fetchTrackInfo, getSpotifyToken } from "./util.js";
 
 const client = new Discord.Client({

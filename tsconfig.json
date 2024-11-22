@@ -7,7 +7,6 @@
         "jsx": "preserve",
         "alwaysStrict": true,
         "esModuleInterop": true,
-        "charset": "utf8",
         "importHelpers": true,
         "skipLibCheck": true,
         "noImplicitAny": true,
