@@ -9,7 +9,7 @@ async function fetchTrackInfo(token: string, trackId: string): Promise<{ preview
         throw new Error(`Failed to fetch track preview for ${trackId}: ${response.status}\n${await getErrorMessage(response)}`);
     }
 
-    const json = await response.json() as any;
+    const json = await response.json() as { preview_url?: string, available_markets?: string, name: string };
     if (!json.preview_url) {
         console.debug("Null preview_url for " + trackId, json.available_markets);
     }
@@ -34,14 +34,13 @@ async function getSpotifyToken(clientId: string, clientSecret: string): Promise<
         throw new Error(await getErrorMessage(response));
     }
 
-    const res = await response.json() as any;
+    const res = await response.json() as { expires_in: number, access_token: string };
     
     console.info(`Obtained new spotify access token, expires in ${res.expires_in}s`);
 
     return { token: res.access_token, expire_seconds: res.expires_in };
 }
 
-// eslint-disable-next-line no-undef
 async function getErrorMessage(response: Response) {
     return response.headers.get("content-type") === "application/json" ? inspect(await response.json()) : await response.text();
 }

@@ -4,7 +4,7 @@ process.chdir(cwd);
 
 import Discord from "discord.js";
 import "dotenv/config";
-import { fetchTrackInfo, getSpotifyToken } from "./util.js";
+import { fetchTrackInfo, getSpotifyToken } from "./util.ts";
 
 const client = new Discord.Client({
     intents: ["GUILDS", "GUILD_MESSAGES"],

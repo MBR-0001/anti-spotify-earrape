@@ -15,7 +15,9 @@
         "typeRoots": [
             "node_modules/@types",
             "@types"
-        ]
+        ],
+        "noEmit": true,
+        "allowImportingTsExtensions": true
     },
     "exclude": [
         "node_modules",
